@@ -2,20 +2,26 @@ import React, {useState} from 'react'
 import ReactDOM from 'react-dom'
 
 const App = () => {
-  const [value, setValue] = useState(10);
+  const [value, setValue] = useState(10)
 
-  const handleClick = () => {
-    console.log('clicked the button')
-    setValue(0)
+  const setToValue = newValue => {
+    setValue(newValue)
   }
 
   return (
     <div>
-      {value}
-      <button onClick={handleClick}>button</button>
+      <Display value={value} />
+      <Button handleClick={() => setToValue(1000)} text="thousand" />
+      <Button handleClick={() => setToValue(0)} text="reset" />
+      <Button handleClick={() => setToValue(value + 1)} text="increment" />
     </div>
   )
 }
+
+const Display = props => <div>{props.value}</div>
+
+const Button = (props) => <button onClick={props.handleClick}>{props.text}</button>
+
 
 ReactDOM.render(
   <App />, 
