@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import ReactDOM from 'react-dom'
 
 const Hello = ({name, age}) => {
@@ -24,6 +24,12 @@ const Footer = () => {
 }
 
 const App = () => {
+  const [counter, setCounter] = useState(0);
+
+  setTimeout(
+    ()=> setCounter(counter + 1), 1000
+  )
+
   const name = "Peter";
   const age = 10;
 
@@ -33,6 +39,7 @@ const App = () => {
       <Hello name="Maya" age={26+10} />
       <Hello name={name} age={age} />
       <Footer />
+      <p>{counter}</p>
     </>
   )
 }
