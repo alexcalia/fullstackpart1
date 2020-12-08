@@ -26,10 +26,9 @@ const Footer = () => {
 const App = () => {
   const [counter, setCounter] = useState(0);
 
-  setTimeout(
-    ()=> setCounter(counter + 1), 1000
-  )
-
+  const handleClick = () => {
+    setCounter(counter + 1);
+  }
   const name = "Peter";
   const age = 10;
 
@@ -39,6 +38,7 @@ const App = () => {
       <Hello name="Maya" age={26+10} />
       <Hello name={name} age={age} />
       <Footer />
+      <button onClick={handleClick}>plus</button>
       <p>{counter}</p>
     </>
   )
