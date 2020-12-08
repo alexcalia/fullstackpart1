@@ -26,6 +26,9 @@ const Footer = () => {
 const App = () => {
   const [counter, setCounter] = useState(0);
 
+  const increaseByOne = () => setCounter(counter + 1);
+  const setToZero = () => setCounter(0);
+
   const name = "Peter";
   const age = 10;
 
@@ -35,8 +38,8 @@ const App = () => {
       <Hello name="Maya" age={26+10} />
       <Hello name={name} age={age} />
       <Footer />
-      <button onClick={()=> setCounter(counter + 1)}>plus</button>
-      <button onClick={()=> setCounter(0)}>Reset</button>
+      <button onClick={increaseByOne}>plus</button>
+      <button onClick={setToZero}>Reset</button>
       <p>{counter}</p>
     </>
   )
