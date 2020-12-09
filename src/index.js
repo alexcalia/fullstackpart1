@@ -1,13 +1,7 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import ReactDOM from 'react-dom'
 import Note from './Note';
 import axios from 'axios';
-
-const promise = axios.get('http://localhost:3001/notes')
-console.log(promise)
-
-const promise2 = axios.get('http://localhost:3001/foobar')
-console.log(promise2)
 
 const notesArray = [
   {
@@ -34,6 +28,22 @@ const App = ({notesArray}) => {
   const [notes, setNotes] = useState(notesArray);
   const [newNote, setNewNote] = useState('a new note...');
   const [showAll, setShowAll] = useState(true);
+
+  const hook = () => {
+  console.log('effect')
+  axios
+    .get('http://localhost:3001/notes')
+    .then(response => {
+      console.log('promise fulfilled')
+      setNotes(response.data)
+    })
+  }
+
+  const toggleImportanceOf = (id) => {
+    console.log('importance of ' + id + ' needs to be toggled')
+  }
+
+  useEffect(hook, [])
 
   const addNote = (event) => {
     event.preventDefault();
@@ -66,7 +76,7 @@ const App = ({notesArray}) => {
         </button>
       </div>
       <ul>
-        {notesToShow.map(note => <Note key={note.id} note={note} />)}
+        {notesToShow.map(note => <Note key={note.id} note={note} toggleImportance={()=> toggleImportanceOf(note.id)}/>)}
       </ul>
       <form onSubmit={addNote}>
         <input value={newNote} onChange={handleChange}/>
