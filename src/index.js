@@ -54,17 +54,17 @@ const App = () => {
 
   const addNote = (event) => {
     event.preventDefault();
-    console.log('button clicked', event.target);
     const noteObject = {
       content: newNote,
       date: new Date().toISOString(),
       important: Math.random() < 0.5,
+      id: notes.length + 1
     }
 
     noteService
       .create(noteObject)
-      .then(response => {
-        setNotes(notes.concat(response.data))
+      .then(returnedNote => {
+        setNotes(notes.concat(returnedNote))
         setNewNote('')
       })
   }

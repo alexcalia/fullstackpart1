@@ -23,6 +23,24 @@
       "date": "2020-12-09T19:44:28.234Z",
       "important": true,
       "id": 4
+    },
+    {
+      "content": "a new note",
+      "date": "2020-12-09T19:55:08.848Z",
+      "important": false,
+      "id": 5
+    },
+    {
+      "content": "a new note",
+      "date": "2020-12-09T19:55:44.275Z",
+      "important": true,
+      "id": 6
+    },
+    {
+      "content": "a new note 2",
+      "date": "2020-12-09T20:03:26.086Z",
+      "important": true,
+      "id": 7
     }
   ]
 }
