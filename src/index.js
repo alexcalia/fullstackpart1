@@ -1,49 +1,31 @@
 import React, {useState, useEffect} from 'react'
 import ReactDOM from 'react-dom'
 import Note from './Note';
-import axios from 'axios';
+import noteService from './services/notes';
 
-const notesArray = [
-  {
-    id: 1,
-    content: 'HTML is easy',
-    date: '2019-05-30T17:30:31.098Z',
-    important: true
-  },
-  {
-    id: 2,
-    content: 'Browser can execute only JavaScript',
-    date: '2019-05-30T18:39:34.091Z',
-    important: false
-  },
-  {
-    id: 3,
-    content: 'GET and POST are the most important methods of HTTP protocol',
-    date: '2019-05-30T19:20:14.298Z',
-    important: true
-  }
-]
-
-const App = ({notesArray}) => {
-  const [notes, setNotes] = useState(notesArray);
+const App = () => {
+  const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState('a new note...');
   const [showAll, setShowAll] = useState(true);
 
-  const hook = () => {
-  console.log('effect')
-  axios
-    .get('http://localhost:3001/notes')
-    .then(response => {
-      console.log('promise fulfilled')
-      setNotes(response.data)
-    })
+  const toggleImportanceOf = id => {
+    const note = notes.find(n => n.id === id)
+    const changedNote = { ...note, important: !note.important }
+
+    noteService
+      .update(id, changedNote)
+      .then(returnedNote => {
+        setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+      })
   }
 
-  const toggleImportanceOf = (id) => {
-    console.log('importance of ' + id + ' needs to be toggled')
-  }
-
-  useEffect(hook, [])
+  useEffect(() => {
+    noteService
+      .getAll()
+      .then(initialNotes => {
+        setNotes(initialNotes)
+      })
+  }, [])
 
   const addNote = (event) => {
     event.preventDefault();
@@ -52,11 +34,14 @@ const App = ({notesArray}) => {
       content: newNote,
       date: new Date().toISOString(),
       important: Math.random() < 0.5,
-      id: notes.length + 1
     }
 
-    setNotes(notes.concat(noteObject));
-    setNewNote('');
+    noteService
+      .create(noteObject)
+      .then(response => {
+        setNotes(notes.concat(response.data))
+        setNewNote('')
+      })
   }
 
   const handleChange = (event) => {
@@ -87,6 +72,6 @@ const App = ({notesArray}) => {
 }
 
 ReactDOM.render(
-  <App notesArray={notesArray} />,
+  <App />,
   document.getElementById('root')
 )
