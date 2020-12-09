@@ -1,7 +1,8 @@
-import React from 'react'
+import React, {useState} from 'react'
 import ReactDOM from 'react-dom'
+import Note from './Note';
 
-const notes = [
+const notesArray = [
   {
     id: 1,
     content: 'HTML is easy',
@@ -22,7 +23,26 @@ const notes = [
   }
 ]
 
-const App = ({notes}) => {
+const App = ({notesArray}) => {
+  const [notes, setNotes] = useState(notesArray);
+  const [newNote, setNewNote] = useState('a new note...')
+
+  const addNote = (event) => {
+    event.preventDefault();
+    console.log('button clicked', event.target);
+    const noteObject = {
+      content: newNote,
+      date: new Date().toISOString(),
+      important: Math.random() < 0.5,
+      id: notes.length + 1
+    }
+
+    setNotes(notes.concat(noteObject));
+    setNewNote('');
+  }
+  const handleChange = (event) => {
+    setNewNote(event.target.value);
+  }
 
   return (
     <div>
@@ -30,17 +50,15 @@ const App = ({notes}) => {
       <ul>
         {notes.map(note => <Note key={note.id} note={note} />)}
       </ul>
+      <form onSubmit={addNote}>
+        <input value={newNote} onChange={handleChange}/>
+        <button type="submit">save</button>
+      </form>
     </div>
   )
 }
 
-const Note = ({note}) => {
-  return (
-    <li>{note.content}</li>
-  )
-}
-
 ReactDOM.render(
-  <App notes={notes} />,
+  <App notesArray={notesArray} />,
   document.getElementById('root')
 )
