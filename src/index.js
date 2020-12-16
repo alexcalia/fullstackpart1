@@ -87,6 +87,8 @@ const App = () => {
       const user = await loginService.login({
         username, password
       })
+
+      noteService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -139,8 +141,11 @@ const App = () => {
 
       {user === null ?
       loginForm() :
-      noteForm()
-      }
+      <div>
+        <p>{user.name} logged-in</p>
+        {noteForm()}
+      </div>
+    }
 
       <div>
         <button onClick={() => setShowAll(!showAll)}>
@@ -151,7 +156,7 @@ const App = () => {
         {notesToShow.map(note => <Note key={note.id} note={note} toggleImportance={()=> toggleImportanceOf(note.id)}/>)}
       </ul>
       <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleChange}/>
+        <input value={newNote} onChange={handleNoteChange}/>
         <button type="submit">save</button>
       </form>
       <Footer />
